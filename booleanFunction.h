@@ -7,32 +7,37 @@
 #include<algorithm>
 #include<set>
 #include<vector>
+#include<map>
+#include<bitset>
 using namespace std;
 class BolleanFunction
 {
 public:
-	BolleanFunction();
-	~BolleanFunction();
-	void inputin(int manyin);
-	void outputin(int manyout);
-	void givename(char name,int i);
-	void giveoutputname(char name);
-	void givemiofout(int i, char o);
-	int gethowmanyin();
-	int gethowmanyout();
-	int getmiofout(int i);
+	BolleanFunction();//constructer
+	~BolleanFunction();//destructure
+	void inputin(int manyin);//intput howmanyinput
+	void outputin(int manyout);//intput howmany output
+	void givename(char name,int i);//give every input aname
+	void giveoutputname(char name);//give output name
+	void givemiofout(int i, int o);//to set my truthable
+	int gethowmanyin();//get howmanyin
+	int gethowmanyout();//get howmnayout
+	int getmiofout(int i);//get mytruthtabla
+	void setmapoftruth(string, int);
+	int getmapoftruth(string);
+	
 private:
-	int *fofboolean;
-	char *numbername;
-	char outname;
-	int howmanyin;
-	int howmanyout;
+	int fofboolean[999];//my truthtable
+	char numbername[10]; //myinpuat name
+	char outname;//my outpuatname
+	int howmanyin;//input number
+	int howmanyout;//output number 
+	map<string, int>mymap;
 };
 
 BolleanFunction::BolleanFunction()
 {
-	fofboolean = nullptr;
-	numbername = nullptr;
+	
 	outname = 0;
 	howmanyin = 0;
 	howmanyout =0;
@@ -40,9 +45,9 @@ BolleanFunction::BolleanFunction()
 
 //to know howmany table 
 void BolleanFunction::inputin(int manyin){
-	fofboolean = new int(pow(2,manyin));
-	numbername = new char(manyin);
+	
 	howmanyin = manyin;
+	
 }
 
 //to know howmany output
@@ -57,12 +62,12 @@ void BolleanFunction::givename(char name, int i) {
 
 BolleanFunction::~BolleanFunction()
 {
-	delete fofboolean;
-	delete numbername;
+	
 	outname = 0;
 	howmanyin = 0;
 	howmanyout = 0;
 }
+
 
 int BolleanFunction::gethowmanyin() {
 	return howmanyin;
@@ -80,14 +85,18 @@ void BolleanFunction::giveoutputname(char name) {
 	outname = name;
 }
 
-void BolleanFunction::givemiofout(int i, char o) {
-	if (o == '1') {
-		fofboolean[i] = 1;
-	}
-	else if (o == '0') {
-		fofboolean[i] = 0;
-	}
-	else if (o == '-') {
-		fofboolean[i] = -1;
-	}
+void BolleanFunction::givemiofout(int i, int o) {
+	fofboolean[i] = o;
+
+}
+
+void BolleanFunction::setmapoftruth(string b, int t) {
+	mymap.insert(pair<string, int>(b, t));
+}
+
+
+int BolleanFunction::getmapoftruth(string a) {
+	map<string, int>::iterator it;
+	it = mymap.find(a);
+	return it->second;
 }
