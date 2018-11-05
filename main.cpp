@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
 			readmyfileoutofP();//process my file
 		if (Ise) break;//the end of the file
 	}
-	head = 0;
-	tail = pow(2,mytruth.gethowmanyin());
-	int jt = 0;
-	for (int i = 0; i < tail; i++)
+	head = 0;// head of mc
+	tail = pow(2,mytruth.gethowmanyin()); //tail of mc
+	int jt = 0;// hownay '1' in truth
+	for (int i = 0; i < tail; i++)// tocount  hownay '1' in truth
 	{
 		if (mytruth.getmiofout(i) == 1 || mytruth.getmiofout(i) == -1)
 		{
@@ -31,12 +31,19 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	tail = jt;
-	countofmc = tail;
-	head = 0;
-	mcfinal.clear();
+	tail = jt;//tail = howmany
+	countofmc = tail;//my difference 
+	head = 0;//to initial
+	mcfinal.clear();//clear my set
 	McCluskeyalgorithm(mytruth.gethowmanyin());
+	set<string>::iterator it;
+	for (it = mcfinal.begin(); it != mcfinal.end(); it++)
+	{
+		cout << mytruth.getmapoftruth(*it) << "  " << mytruth.getmapofpatric(*it) << endl;
+		//cout << mytruth.numofpatric << endl;
+	}
 	ifile.close();
+	
 	//ofile.close();
 	system("PAUSE");
 	return 0;

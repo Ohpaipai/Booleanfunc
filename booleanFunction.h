@@ -23,17 +23,31 @@ public:
 	int gethowmanyin();//get howmanyin
 	int gethowmanyout();//get howmnayout
 	int getmiofout(int i);//get mytruthtabla
-	void setmapoftruth(string, int);
-	int getmapoftruth(string);
-	
+	void setmapoftruth(string, string);
+	char getmapofpatric(string);
+	string getmapoftruth(string);
+	static int numofpatric;
+	int gethowmanydontcare() {
+		return howmanydontcare;
+	}
+	int getdontcarenum(int a) {
+		return dontcare[a];
+	}
+	set<string>patricnum;
 private:
-	int fofboolean[999];//my truthtable
-	char numbername[10]; //myinpuat name
+	int fofboolean[1024] = {0};//my truthtable
+	char numbername[10] = { 0 }; //myinpuat name
+	int dontcare[1024] = { 0 };
+	int howmanydontcare =0 ;
 	char outname;//my outpuatname
 	int howmanyin;//input number
 	int howmanyout;//output number 
-	map<string, int>mymap;
+	map<string,string>mymap;
+	map<string, char>mymapofpatrick;
+	
 };
+
+int BolleanFunction::numofpatric = 75;
 
 BolleanFunction::BolleanFunction()
 {
@@ -41,6 +55,8 @@ BolleanFunction::BolleanFunction()
 	outname = 0;
 	howmanyin = 0;
 	howmanyout =0;
+	howmanydontcare = 0;
+	
 }
 
 //to know howmany table 
@@ -62,7 +78,7 @@ void BolleanFunction::givename(char name, int i) {
 
 BolleanFunction::~BolleanFunction()
 {
-	
+	howmanydontcare = 0;
 	outname = 0;
 	howmanyin = 0;
 	howmanyout = 0;
@@ -87,16 +103,45 @@ void BolleanFunction::giveoutputname(char name) {
 
 void BolleanFunction::givemiofout(int i, int o) {
 	fofboolean[i] = o;
+	if (o == -1) {
+		dontcare[howmanydontcare] = i;
+		howmanydontcare++;
+	}
 
 }
 
-void BolleanFunction::setmapoftruth(string b, int t) {
-	mymap.insert(pair<string, int>(b, t));
+void BolleanFunction::setmapoftruth(string b,string t) {
+	mymap.insert(pair<string, string>(b,t));
+	string a;
+	for (int i = 0; i < howmanyin; i++)
+	{
+		if (b[i] != '-') {
+			if (b[i] == '0') a += toupper(numbername[i]);
+			else if (b[i] == '1') a += tolower(numbername[i]);
+		}
+	}
+	mymapofpatrick.insert(pair<string,char>(a,++numofpatric));
+	
 }
 
 
-int BolleanFunction::getmapoftruth(string a) {
-	map<string, int>::iterator it;
+string BolleanFunction::getmapoftruth(string a) {
+	map<string,string>::iterator it;
 	it = mymap.find(a);
+	return it->second;
+}
+
+
+char BolleanFunction::getmapofpatric(string b) {
+	map<string, char>::iterator it;
+	string a;
+	for (int i = 0; i < howmanyin; i++)
+	{
+		if (b[i] != '-') {
+			if (b[i] == '0') a += toupper(numbername[i]);
+			else if (b[i] == '1') a += tolower(numbername[i]);
+		}
+	}
+	it = mymapofpatrick.find(a);
 	return it->second;
 }

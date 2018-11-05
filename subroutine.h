@@ -6,25 +6,27 @@ fstream ofile;
 string readfilestring;
 bool IsP, Ise;//is p or e the last word of line
 int temofp = 0,howmanyp;//to count .p item
-BolleanFunction mytruth;
-int head = 0;
-int tail = 0;
-int lasthead;
-int lasttail;
-int countofmc = 0;
-string con[100];
-set<string>mcfinal;
-bool iscoop = false;
-bool used = false;
+BolleanFunction mytruth; //my data_structure
+int head = 0;//in McCluskey head
+int tail = 0; //in McCluskey tail
+int countofmc = 0; //McCluskey next tail - head
+string con[100]; //McCluskey tem
+set<string>mcfinal; //McCluskey final
+bool iscoop = false; //is used for coopare
+bool used = false;// is first to set
+string tr;//my count mi
+string patricstr;
 
 
-
+void Petricksmethod();//Petrick's method
 void truthRecursion(string t, int nowwhere, int truth, int num); //recurison give truth table
 void readmyfileofP(); //readfile if got p
 void readmyfileoutofP(); //readfile if weren't get p
-void McCluskeyalgorithm(int);
-string tob(int num);
-void comparestring(string, string);
+void McCluskeyalgorithm(int);//McCluskeyalgorithm
+string tob(int num);//dec to bin
+void comparestring(string, string);//string to look is gray code
+void countbtod(int,string,int);
+
 
 void readmyfileofP() {
 	int whichoneoflogic = 0;
@@ -33,7 +35,7 @@ void readmyfileofP() {
 	temformula.clear();
 	for (int i = 0; i <readfilestring.length(); i++)
 	{
-		if (readfilestring[i] != ' '&& readfilestring[i] != 'ã€€') {
+		if (readfilestring[i] != ' '&& readfilestring[i] != '¡@') {
 			//input
 			
 			if (!IsIN)//first to do the truthtable
@@ -73,13 +75,13 @@ void readmyfileoutofP() {
 	{
 
 		//kill space
-		if (readfilestring[i] != ' ' || readfilestring[i] != 'ã€€') {
+		if (readfilestring[i] != ' ' || readfilestring[i] != '¡@') {
 			//the head is .
 			if (readfilestring[i] == '.') {
 				//////
 #pragma region i
 
-				if (readfilestring[i + 1] == 'i' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == 'ã€€')) {
+				if (readfilestring[i + 1] == 'i' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == '¡@')) {
 					string temforpla;
 					int howmanyinput = 0;//howmany input
 					temforpla.clear();//clear
@@ -88,10 +90,10 @@ void readmyfileoutofP() {
 					tem.clear();
 					for (int j = i + 2; j < readfilestring.length(); j++)//howmany number
 					{
-						if (readfilestring[j] != ' '&& readfilestring[j] != 'ã€€') {
+						if (readfilestring[j] != ' '&& readfilestring[j] != '¡@') {
 							for (int k = j; k < readfilestring.length(); k++)
 							{
-								if (readfilestring[k] != ' ' && readfilestring[k] != 'ã€€')
+								if (readfilestring[k] != ' ' && readfilestring[k] != '¡@')
 									temforpla += readfilestring[k];
 								else break;
 							}
@@ -110,7 +112,7 @@ void readmyfileoutofP() {
 #pragma endregion
 				//////
 #pragma region o
-				else if (readfilestring[i + 1] == 'o' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == 'ã€€')) {//o
+				else if (readfilestring[i + 1] == 'o' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == '¡@')) {//o
 					string temforpla;
 					int howmanyouput = 0;//howmany input
 					temforpla.clear();//clear
@@ -119,10 +121,10 @@ void readmyfileoutofP() {
 					tem.clear();
 					for (int j = i + 2; j < readfilestring.length(); j++)//howmany number
 					{
-						if (readfilestring[j] != ' ' && readfilestring[j] != 'ã€€') {
+						if (readfilestring[j] != ' ' && readfilestring[j] != '¡@') {
 							for (int k = j; k < readfilestring.length(); k++)
 							{
-								if (readfilestring[k] != ' ' && readfilestring[k] != 'ã€€')
+								if (readfilestring[k] != ' ' && readfilestring[k] != '¡@')
 									temforpla += readfilestring[k];
 								else break;
 							}
@@ -138,14 +140,14 @@ void readmyfileoutofP() {
 #pragma endregion
 				//////
 #pragma region e
-				else if (readfilestring[i + 1] == 'e' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == 'ã€€')) {
+				else if (readfilestring[i + 1] == 'e' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == '¡@')) {
 					Ise = true;//this program is over
 					break;
 				}
 #pragma endregion
 				//////
 #pragma region p
-				else if (readfilestring[i + 1] == 'p' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == 'ã€€')) {
+				else if (readfilestring[i + 1] == 'p' && (readfilestring[i + 2] == ' ' || readfilestring[i + 2] == '¡@')) {
 					string temforpla;
 					temforpla.clear();//clear
 					stringstream tem;
@@ -153,10 +155,10 @@ void readmyfileoutofP() {
 					tem.clear();
 					for (int j = i + 2; j < readfilestring.length(); j++)//howmany number
 					{
-						if (readfilestring[j] != ' '&&readfilestring[j] != 'ã€€') {
+						if (readfilestring[j] != ' '&&readfilestring[j] != '¡@') {
 							for (int k = j; k < readfilestring.length(); k++)
 							{
-								if (readfilestring[k] != ' '&& readfilestring[k] != 'ã€€')
+								if (readfilestring[k] != ' '&& readfilestring[k] != '¡@')
 									temforpla += readfilestring[k];
 								else break;
 							}
@@ -172,12 +174,12 @@ void readmyfileoutofP() {
 #pragma endregion
 				//////
 #pragma region ilb
-				else if (readfilestring[i + 1] == 'i' && readfilestring[i + 2] == 'l'&& readfilestring[i + 3] == 'b' && (readfilestring[i + 4] == ' ' || readfilestring[i + 4] == 'ã€€')) {
+				else if (readfilestring[i + 1] == 'i' && readfilestring[i + 2] == 'l'&& readfilestring[i + 3] == 'b' && (readfilestring[i + 4] == ' ' || readfilestring[i + 4] == '¡@')) {
 					int tocountin = 0;
 					for (int j = i + 5; j < readfilestring.length(); j++)//howmany number
 					{
 
-						if (readfilestring[j] != ' ' && readfilestring[j] != 'ã€€') {
+						if (readfilestring[j] != ' ' && readfilestring[j] != '¡@') {
 							if (tocountin >= mytruth.gethowmanyin()) break;
 							else {
 								mytruth.givename(readfilestring[j], tocountin);//give name to inputnmae matrix
@@ -191,12 +193,12 @@ void readmyfileoutofP() {
 #pragma endregion
 				//////
 #pragma region ob
-				else if (readfilestring[i + 1] == 'o' && readfilestring[i + 2] == 'b' && (readfilestring[i + 3] == ' ' || readfilestring[i + 3] == 'ã€€')) {
+				else if (readfilestring[i + 1] == 'o' && readfilestring[i + 2] == 'b' && (readfilestring[i + 3] == ' ' || readfilestring[i + 3] == '¡@')) {
 					int tocountout = 0;
 					for (int j = i + 4; j < readfilestring.length(); j++)//howmany number
 					{
 
-						if (readfilestring[j] != ' ' && readfilestring[j] != 'ã€€') {
+						if (readfilestring[j] != ' ' && readfilestring[j] != '¡@') {
 							if (tocountout >= mytruth.gethowmanyout()) break;
 							else {
 								mytruth.giveoutputname(readfilestring[j]);//give output name to outputname matrix
@@ -245,15 +247,20 @@ void McCluskeyalgorithm(int time) {
 	if (time <=1) {
 		for (int i =head; i <tail; i++)
 		{
-			cout << con[i] << endl;
+			//cout << con[i] << endl;
 			mcfinal.insert(con[i]);
 		}
-		cout << endl;
+		//cout << endl;
 		set<string>::iterator it;
 		for ( it = mcfinal.begin(); it !=mcfinal.end(); it++)
 		{
-			cout << *it << endl;
-			mytruth.setmapoftruth(*it, 1);
+			//cout << *it << endl;
+			
+			tr.clear();
+			tr = "";
+			countbtod(0,*it,0);
+			mytruth.setmapoftruth(*it,tr);
+			//cout << mytruth.numofpatric << endl;
 		}
 		return;
 	}
@@ -310,6 +317,63 @@ string tob(int num) {
 	 return rr;
 }
 
+void countbtod(int time,string c,int num){
+	if (time >= mytruth.gethowmanyin()) {
+		stringstream ss;
+		string d;
+		ss << num;
+		ss >> d;
+		if (tr== "") {
+			bool ind = false;
+			for (int i = 0; i <mytruth.gethowmanydontcare(); i++)
+			{
+				//cout << "test:" << mytruth.getdontcarenum(i) << endl;
+				if (num == mytruth.getdontcarenum(i)) {
+					ind = true;
+					break;
+				}
+			}
+			if (ind == false) {
+				tr += d;
+			
+			}
+		}
+		else {
+			bool ind = false;
+			for (int i = 0; i <mytruth.gethowmanydontcare(); i++)
+			{
+				
+				if (num == mytruth.getdontcarenum(i)) {
+					ind = true;
+					break;
+				}
+			}
+			if (ind==false) {
+				tr += ",";
+				tr += d;
+			}
+			
+		}
+	}
+	else {
+		if (c[time] == '0') {
+			countbtod(time + 1, c, num);
+		}
+		else if (c[ time] == '1')
+		{
+			num += pow(2, mytruth.gethowmanyin() - 1 - time);
+			countbtod( time + 1, c, num);
+			num-= pow(2, mytruth.gethowmanyin() - 1 - time);
+		}
+		else if (c[time] == '-') {
+			num += pow(2, mytruth.gethowmanyin() - 1 - time);
+			countbtod( time + 1, c, num);
+			num -= pow(2, mytruth.gethowmanyin() - 1 - time);
+			countbtod( time + 1, c, num);
+		}
+	}
+}
+
 
 void comparestring(string a, string b){
 
@@ -330,3 +394,15 @@ void comparestring(string a, string b){
 		iscoop = true;
 	}
 }
+
+
+void Petricksmethod(){
+	//¥Î¼Æ¦r¥h´M§ä§Úªºklmn©ñ¨ìÀÉ®×§@µeÀË ©ñ¦bset¸Ì­± boolean ¸Ì­±¦³public«Ø¦nset ¦b countbtod°µ (§âmap¤¤¸ê®Æµ²ºcdelete(string,string)ªº
+	set<string>::iterator it;
+	for (it = mcfinal.begin(); it != mcfinal.end(); it++)
+	{
+		
+	}
+}
+
+		
