@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 		cout << mytruth.getmapoftruth(*it) << "  " << mytruth.getmapofpatric(*it) << endl;
 		//cout << mytruth.numofpatric << endl;
 	}
+	Petricksmethod();
 	ifile.close();
 	
 	//ofile.close();

@@ -10,6 +10,7 @@
 #include<map>
 #include<bitset>
 using namespace std;
+set<string>mynumoftruth;
 class BolleanFunction
 {
 public:
@@ -23,14 +24,14 @@ public:
 	int gethowmanyin();//get howmanyin
 	int gethowmanyout();//get howmnayout
 	int getmiofout(int i);//get mytruthtabla
-	void setmapoftruth(string, string);
-	char getmapofpatric(string);
-	string getmapoftruth(string);
-	static int numofpatric;
-	int gethowmanydontcare() {
+	void setmapoftruth(string, string); //set 1001--> K L M N
+	char getmapofpatric(string); //GET MY K L M N
+	string getmapoftruth(string);//GET 100- ->8,9
+	static int numofpatric;//K L M ....
+	int gethowmanydontcare() { //get howmany don't care
 		return howmanydontcare;
 	}
-	int getdontcarenum(int a) {
+	int getdontcarenum(int a) {//get don't care
 		return dontcare[a];
 	}
 	set<string>patricnum;
@@ -120,7 +121,7 @@ void BolleanFunction::setmapoftruth(string b,string t) {
 			else if (b[i] == '1') a += tolower(numbername[i]);
 		}
 	}
-	mymapofpatrick.insert(pair<string,char>(a,++numofpatric));
+	mymapofpatrick.insert(pair<string,char>(a,numofpatric++));
 	
 }
 

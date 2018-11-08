@@ -3,7 +3,7 @@
 using namespace std;
 fstream ifile;
 fstream ofile;
-string readfilestring;
+string readfilestring;//READ PLA STRING
 bool IsP, Ise;//is p or e the last word of line
 int temofp = 0,howmanyp;//to count .p item
 BolleanFunction mytruth; //my data_structure
@@ -15,8 +15,8 @@ set<string>mcfinal; //McCluskey final
 bool iscoop = false; //is used for coopare
 bool used = false;// is first to set
 string tr;//my count mi
-string patricstr;
-
+fstream ipfile; //myfile function
+fstream opfile; //myfile function
 
 void Petricksmethod();//Petrick's method
 void truthRecursion(string t, int nowwhere, int truth, int num); //recurison give truth table
@@ -25,8 +25,8 @@ void readmyfileoutofP(); //readfile if weren't get p
 void McCluskeyalgorithm(int);//McCluskeyalgorithm
 string tob(int num);//dec to bin
 void comparestring(string, string);//string to look is gray code
-void countbtod(int,string,int);
-
+void countbtod(int,string,int); //make 100- -->8,9
+string decreasemyfunction(string,int);
 
 void readmyfileofP() {
 	int whichoneoflogic = 0;
@@ -323,6 +323,7 @@ void countbtod(int time,string c,int num){
 		string d;
 		ss << num;
 		ss >> d;
+
 		if (tr== "") {
 			bool ind = false;
 			for (int i = 0; i <mytruth.gethowmanydontcare(); i++)
@@ -335,6 +336,7 @@ void countbtod(int time,string c,int num){
 			}
 			if (ind == false) {
 				tr += d;
+				mynumoftruth.insert(d);
 			
 			}
 		}
@@ -351,6 +353,7 @@ void countbtod(int time,string c,int num){
 			if (ind==false) {
 				tr += ",";
 				tr += d;
+				mynumoftruth.insert(d);
 			}
 			
 		}
@@ -397,12 +400,164 @@ void comparestring(string a, string b){
 
 
 void Petricksmethod(){
-	//用數字去尋找我的klmn放到檔案作畫檢 放在set裡面 boolean 裡面有public建好set 在 countbtod做 (把map中資料結構delete(string,string)的
 	set<string>::iterator it;
-	for (it = mcfinal.begin(); it != mcfinal.end(); it++)
+	opfile.open("opfile.txt", ios::out);
+#pragma region todoPAtrick
+	for (it = mynumoftruth.begin(); it != mynumoftruth.end(); it++)
 	{
-		
+		string ans;
+		set<string>::iterator it2;
+		for (it2 = mcfinal.begin(); it2 != mcfinal.end(); it2++)
+		{
+			//cout << *it2 << "  " << mytruth.getmapofpatric(*it2) << endl;;
+			string a;
+			a = mytruth.getmapoftruth(*it2);
+			string ttt = "";
+			for (int i = 0; i < a.length(); i++)
+			{
+				if (i + 1 == a.length())
+				{
+					ttt += a[i];
+					if (ttt == *it) {
+						opfile << mytruth.getmapofpatric(*it2)<<"+";
+
+						break;
+					}
+					ttt.clear();
+					ttt = "";
+
+				}
+				else if (a[i] == ',') {
+					if (ttt == *it) {
+						opfile << mytruth.getmapofpatric(*it2)<<"+";
+
+						break;
+					}
+					ttt.clear();
+					ttt = "";
+
+				}
+				else {
+					if (a[i] != ' ' || a[i] != ',')
+						ttt += a[i];
+				}
+			}
+
+
+		}
+		opfile << endl;
 	}
+#pragma endregion
+		opfile.close();
+		ipfile.open("opfile.txt", ios::in);
+		bool canmodify = false;
+		string readofopfile;
+		string mainofmyfunction="";
+		string dous = "";
+		short timeofp = 0;
+		while (getline(ipfile, readofopfile)) {
+			timeofp++;
+			string lkk;
+			if (timeofp % 2 == 0 || canmodify == true) {
+				int timeoftime = 0;
+				for (int i = 0; i <mainofmyfunction.length(); i++)
+				{	
+					if (mainofmyfunction[i] == '+') {
+						string lkp;
+						for (int k = 0; k < readofopfile.length(); k++)
+						{
+							if (readofopfile[k] == '+'){
+								//if (lkk == lkp) {
+									//dous += lkp + "+";
+								//}
+								//else {
+								
+									/*int repeatstr = lkk.find(lkp);
+									if (repeatstr !=-1) {
+										string temstrr;
+									
+										for (int i1 = 0; i1 <lkk.length(); i1++)
+										{
+											if (i1 == repeatstr) {
+												for (int i2 = 0; i2 < lkp.length(); i2++)
+												{
+													i1++;
+												}
+												i1--;
+											}
+											else {
+												temstrr += lkk[i1];
+											}
+										}
+										
+										dous += temstrr + "+";
+									}
+									else dous += lkk + lkp + "+";*/
+									dous += lkk + lkp + "+";
+								//}
+								
+								lkp.clear();
+								lkp = "";
+							}
+							else lkp += readofopfile[k];
+							
+						}
+						lkk.clear();
+						lkk = "";
+					}
+					else lkk += mainofmyfunction[i];
+					
+				}//end of main;
+				canmodify = true;
+				mainofmyfunction = dous;
+				//to decoreation
+				string getcom;
+				string finalll;
+				for (int y = 0; y < mainofmyfunction.length(); y++)
+				{
+					if (mainofmyfunction[y] == '+') {
+						set<int>rr;
+						for (int i1 = 0; i1 < getcom.length(); i1++)
+						{
+							for (int i2 = i1+1; i2 < getcom.length(); i2++)
+							{
+								if (getcom[i1] == getcom[i2]) {
+									rr.insert(i2);
+								}
+							}
+						}
+						for (int i1 = 0; i1 < getcom.length(); i1++)
+						{
+							if (!rr.count(i1))
+							{
+								finalll += getcom[i1];
+							}
+						}
+						finalll += '+';
+						rr.clear();
+						getcom.clear();
+					}
+					else {
+						getcom += mainofmyfunction[y];
+					}
+				}
+				mainofmyfunction = finalll;
+				//
+				dous.clear();
+				dous = "";
+			}
+			else {
+				mainofmyfunction = readofopfile;
+			}
+		}
+		cout << mainofmyfunction << endl;
+
+
+}
+
+
+string decreasemyfunction(string a, int time) {
+	return "Dasdasd";
 }
 
 		
