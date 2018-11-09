@@ -1,8 +1,6 @@
 #pragma once
 #include"booleanFunction.h"
 using namespace std;
-fstream ifile;
-fstream ofile;
 string readfilestring;//READ PLA STRING
 bool IsP, Ise;//is p or e the last word of line
 int temofp = 0,howmanyp;//to count .p item
@@ -10,13 +8,15 @@ BolleanFunction mytruth; //my data_structure
 int head = 0;//in McCluskey head
 int tail = 0; //in McCluskey tail
 int countofmc = 0; //McCluskey next tail - head
-string con[100]; //McCluskey tem
+string con[100000]; //McCluskey tem
 set<string>mcfinal; //McCluskey final
 bool iscoop = false; //is used for coopare
 bool used = false;// is first to set
 string tr;//my count mi
 fstream ipfile; //myfile function
 fstream opfile; //myfile function
+string  outputfinal1[100001];
+
 
 void Petricksmethod();//Petrick's method
 void truthRecursion(string t, int nowwhere, int truth, int num); //recurison give truth table
@@ -26,7 +26,6 @@ void McCluskeyalgorithm(int);//McCluskeyalgorithm
 string tob(int num);//dec to bin
 void comparestring(string, string);//string to look is gray code
 void countbtod(int,string,int); //make 100- -->8,9
-string decreasemyfunction(string,int);
 
 void readmyfileofP() {
 	int whichoneoflogic = 0;
@@ -448,116 +447,189 @@ void Petricksmethod(){
 		opfile << endl;
 	}
 #pragma endregion
-		opfile.close();
-		ipfile.open("opfile.txt", ios::in);
-		bool canmodify = false;
-		string readofopfile;
-		string mainofmyfunction="";
-		string dous = "";
-		short timeofp = 0;
-		while (getline(ipfile, readofopfile)) {
-			timeofp++;
-			string lkk;
-			if (timeofp % 2 == 0 || canmodify == true) {
-				int timeoftime = 0;
-				for (int i = 0; i <mainofmyfunction.length(); i++)
-				{	
-					if (mainofmyfunction[i] == '+') {
-						string lkp;
-						for (int k = 0; k < readofopfile.length(); k++)
-						{
-							if (readofopfile[k] == '+'){
-								//if (lkk == lkp) {
-									//dous += lkp + "+";
-								//}
-								//else {
-								
-									/*int repeatstr = lkk.find(lkp);
-									if (repeatstr !=-1) {
-										string temstrr;
-									
-										for (int i1 = 0; i1 <lkk.length(); i1++)
-										{
-											if (i1 == repeatstr) {
-												for (int i2 = 0; i2 < lkp.length(); i2++)
-												{
-													i1++;
-												}
-												i1--;
-											}
-											else {
-												temstrr += lkk[i1];
-											}
-										}
-										
-										dous += temstrr + "+";
-									}
-									else dous += lkk + lkp + "+";*/
-									dous += lkk + lkp + "+";
-								//}
-								
-								lkp.clear();
-								lkp = "";
-							}
-							else lkp += readofopfile[k];
-							
+#pragma region firstdecrease
+	opfile.close();
+	ipfile.open("opfile.txt", ios::in);
+	bool canmodify = false;
+	string readofopfile;
+	string mainofmyfunction = "";
+	string dous = "";
+	short timeofp = 0;
+	while (getline(ipfile, readofopfile)) {
+		timeofp++;
+		string lkk;
+		if (timeofp % 2 == 0 || canmodify == true) {
+			int timeoftime = 0;
+			for (int i = 0; i < mainofmyfunction.length(); i++)
+			{
+				if (mainofmyfunction[i] == '+') {
+					string lkp;
+					for (int k = 0; k < readofopfile.length(); k++)
+					{
+						if (readofopfile[k] == '+') {
+
+							dous += lkk + lkp + "+";
+
+
+							lkp.clear();
+							lkp = "";
 						}
-						lkk.clear();
-						lkk = "";
+						else lkp += readofopfile[k];
+
 					}
-					else lkk += mainofmyfunction[i];
-					
-				}//end of main;
-				canmodify = true;
-				mainofmyfunction = dous;
-				//to decoreation
-				string getcom;
-				string finalll;
-				for (int y = 0; y < mainofmyfunction.length(); y++)
-				{
-					if (mainofmyfunction[y] == '+') {
-						set<int>rr;
-						for (int i1 = 0; i1 < getcom.length(); i1++)
-						{
-							for (int i2 = i1+1; i2 < getcom.length(); i2++)
-							{
-								if (getcom[i1] == getcom[i2]) {
-									rr.insert(i2);
-								}
-							}
-						}
-						for (int i1 = 0; i1 < getcom.length(); i1++)
-						{
-							if (!rr.count(i1))
-							{
-								finalll += getcom[i1];
-							}
-						}
-						finalll += '+';
-						rr.clear();
-						getcom.clear();
-					}
-					else {
-						getcom += mainofmyfunction[y];
-					}
+					lkk.clear();
+					lkk = "";
 				}
-				mainofmyfunction = finalll;
-				//
-				dous.clear();
-				dous = "";
+				else lkk += mainofmyfunction[i];
+
+			}//end of main;
+			canmodify = true;
+			mainofmyfunction = dous;
+#pragma endregion
+
+#pragma region realdecration
+			//to decoreation
+			string getcom;
+			string finalll;
+			for (int y = 0; y < mainofmyfunction.length(); y++)
+			{
+				if (mainofmyfunction[y] == '+') {
+					set<int>rr;
+					for (int i1 = 0; i1 < getcom.length(); i1++)
+					{
+						for (int i2 = i1 + 1; i2 < getcom.length(); i2++)
+						{
+							if (getcom[i1] == getcom[i2]) {
+								rr.insert(i2);
+							}
+						}
+					}
+					for (int i1 = 0; i1 < getcom.length(); i1++)
+					{
+						if (!rr.count(i1))
+						{
+							finalll += getcom[i1];
+						}
+					}
+					finalll += '+';
+					rr.clear();
+					getcom.clear();
+				}
+				else {
+					getcom += mainofmyfunction[y];
+				}
+			}
+			mainofmyfunction = finalll;
+			//
+			dous.clear();
+			dous = "";
+		}
+		else {
+			mainofmyfunction = readofopfile;
+		}
+	}
+	//cout << mainofmyfunction << endl;
+	ipfile.close();
+#pragma endregion
+
+		//output
+#pragma region chosewhicout
+	string fout;
+	int tocount = 0;
+	int small = 9999;
+
+	for (int i6 = 0; i6 < mainofmyfunction.length(); i6++)
+	{
+		if (mainofmyfunction[i6] == '+') {
+			if (fout.length() < small) {
+				small = fout.length();
+				for (int p = 0; p < tocount; p++)
+				{
+					outputfinal1[p] = "";
+				}
+				tocount = 0;
+				outputfinal1[tocount++] = fout;
+				fout.clear();
+				fout = "";
+			}
+			else if (fout.length() == small) {
+				outputfinal1[tocount++] = fout;
+				fout.clear();
+				fout = "";
 			}
 			else {
-				mainofmyfunction = readofopfile;
+				fout.clear();
+				fout = "";
 			}
 		}
-		cout << mainofmyfunction << endl;
+		else if (mainofmyfunction[i6] != '+')fout += mainofmyfunction[i6];
+	}
+	int smallofout = 999;
+	string ouputpla = "";
+	for (int p = 0; p < tocount; p++)
+	{
+		//cout << *it << endl;
+		string iii = outputfinal1[p];
+		int a = 0;
+		for (int z = 0; z < iii.length(); z++)
+		{
+			a += mytruth.resent(iii[z]);
+		}
+		if (smallofout > a) {
+			smallofout = a;
+			ouputpla = iii;
+		}
+	}
+#pragma endregion
 
+		//cout << ouputpla << endl;
+		//realout
+		cout << "Total number of terms: " << ouputpla.length() << endl;
+		cout << "Total number of literals: " << smallofout << endl;
+		//cout << ".i " << mytruth.gethowmanyin() << endl;
+		ofile<< ".i " << mytruth.gethowmanyin() << endl;
+		//cout << ".o " << mytruth.gethowmanyout() << endl;
+		ofile<< ".o " << mytruth.gethowmanyout() << endl;
+		//cout << ".ilb ";
+		/*for (int s = 0; s <mytruth.gethowmanyin(); s++)
+		{
+			if (s + 1 == mytruth.gethowmanyin()) {
+				cout << mytruth.getmyname(s);
+			}
+			else {
+				cout << mytruth.getmyname(s)<<" ";
+			}
+		}
+		cout << endl;*/
+		ofile << ".ilb ";
+		for (int s = 0; s <mytruth.gethowmanyin(); s++)
+		{
+			if (s + 1 == mytruth.gethowmanyin()) {
+				ofile << mytruth.getmyname(s);
+			}
+			else {
+				ofile << mytruth.getmyname(s) << " ";
+			}
+		}
+		ofile << endl;
+		//cout << ".ob " << mytruth.getmynameout() << endl;
+		ofile << ".ob " << mytruth.getmynameout() << endl;
+		//cout << ".p " << ouputpla.length() << endl;
+		ofile << ".p " << ouputpla.length() << endl;
+		for (int i = 0; i < ouputpla.length(); i++)
+		{
+			mytruth.resetpla(ouputpla[i]);
+			//cout << " 1" << endl;
+			ofile <<" 1" <<endl;
+		}
+		//cout << ".e" << endl;
+		ofile << ".e"  << endl;
+		
 
+		
 }
 
 
-string decreasemyfunction(string a, int time) {
-	return "Dasdasd";
-}
+
 
 		

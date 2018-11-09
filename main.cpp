@@ -4,7 +4,7 @@ int main(int argc, char *argv[])
 	//ifile.open(argv[1], ios::in );//inputfile cmd
 	//ofile.open(argv[2], ios::out);//outputfile cmd
 	ifile.open("input.pla", ios::in);//input test
-	//ofile.open("output.dot", ios::out);//output test
+	ofile.open("output.pla", ios::out);//output test
 	while (getline(ifile,readfilestring))//read a line once again
 	{
 		if (IsP)
@@ -37,15 +37,15 @@ int main(int argc, char *argv[])
 	mcfinal.clear();//clear my set
 	McCluskeyalgorithm(mytruth.gethowmanyin());
 	set<string>::iterator it;
-	for (it = mcfinal.begin(); it != mcfinal.end(); it++)
+/*	for (it = mcfinal.begin(); it != mcfinal.end(); it++)
 	{
 		cout << mytruth.getmapoftruth(*it) << "  " << mytruth.getmapofpatric(*it) << endl;
-		//cout << mytruth.numofpatric << endl;
-	}
+		cout << mytruth.numofpatric << endl;
+	}*/
 	Petricksmethod();
 	ifile.close();
 	
-	//ofile.close();
+	ofile.close();
 	system("PAUSE");
 	return 0;
 }

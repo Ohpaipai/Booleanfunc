@@ -11,6 +11,8 @@
 #include<bitset>
 using namespace std;
 set<string>mynumoftruth;
+fstream ifile;
+fstream ofile;
 class BolleanFunction
 {
 public:
@@ -18,7 +20,7 @@ public:
 	~BolleanFunction();//destructure
 	void inputin(int manyin);//intput howmanyinput
 	void outputin(int manyout);//intput howmany output
-	void givename(char name,int i);//give every input aname
+	void givename(char name, int i);//give every input aname
 	void giveoutputname(char name);//give output name
 	void givemiofout(int i, int o);//to set my truthable
 	int gethowmanyin();//get howmanyin
@@ -28,6 +30,64 @@ public:
 	char getmapofpatric(string); //GET MY K L M N
 	string getmapoftruth(string);//GET 100- ->8,9
 	static int numofpatric;//K L M ....
+						   //get literals
+	int resent(char m) {
+		map<string, char>::iterator it;
+		int r = 0;
+		for (it = mymapofpatrick.begin(); it != mymapofpatrick.end(); it++)
+		{
+			if (it->second == m) {
+
+				for (int i = 0; i < it->first.length(); i++)
+				{
+					if ((it->first[i] <= 90 && it->first[i] >= 65) || (it->first[i] <= 122 && it->first[i] >= 97)) {
+						r++;
+					}
+
+				}
+				break;
+			}
+		}
+		return r;
+	} 
+	//get AbCD-->0100
+	void resetpla(char m) {
+		map<string, char>::iterator it;
+		for (it = mymapofpatrick.begin(); it != mymapofpatrick.end(); it++)
+		{
+			if (it->second == m) {
+
+				int a = 0;
+				for (int i = 0; i < howmanyin; i++)
+				{
+					if (tolower(it->first[a]) == numbername[i]) {
+						if (it->first[a] >= 65 && it->first[a] <= 90) {
+							//cout << "0";
+							ofile << "0";
+						}
+						else {
+							//cout << "1";
+							ofile << "1";
+						}
+						a++;
+					}
+					else {
+						//cout << "-";
+						ofile << "-";
+					}
+				}
+				
+			}
+		}
+	}
+	//grtmyinputname
+	char getmyname(int i) {
+		return numbername[i];
+	}
+	//grtmyouputname
+	char getmynameout() {
+		return outname;
+	}
 	int gethowmanydontcare() { //get howmany don't care
 		return howmanydontcare;
 	}
@@ -36,9 +96,9 @@ public:
 	}
 	set<string>patricnum;
 private:
-	int fofboolean[1024] = {0};//my truthtable
+	int fofboolean[2048] = {0};//my truthtable
 	char numbername[10] = { 0 }; //myinpuat name
-	int dontcare[1024] = { 0 };
+	int dontcare[2048] = { 0 };
 	int howmanydontcare =0 ;
 	char outname;//my outpuatname
 	int howmanyin;//input number
